@@ -1,0 +1,108 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Category {
+  FOOD
+  STAY
+  TRAVEL
+  FUN
+  OTHER
+}
+
+enum SplitType {
+  EQUAL
+  EXACT
+  SHARES
+}
+
+model Trip {
+  id          String       @id @default(uuid()) @db.Uuid
+  name        String
+  currency    String       @default("INR")
+  startDate   DateTime?    @db.Date
+  endDate     DateTime?    @db.Date
+  inviteCode  String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  members     Member[]
+  expenses    Expense[]
+  settlements Settlement[]
+
+  @@map("trips")
+}
+
+model Member {
+  id              String         @id @default(uuid()) @db.Uuid
+  tripId          String         @db.Uuid
+  name            String
+  createdAt       DateTime       @default(now())
+
+  trip            Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  expensesPaid    Expense[]      @relation("PaidBy")
+  shares          ExpenseShare[]
+  settlementsPaid Settlement[]   @relation("SettlementFrom")
+  settlementsGot  Settlement[]   @relation("SettlementTo")
+
+  @@index([tripId])
+  @@map("members")
+}
+
+model Expense {
+  id          String         @id @default(uuid()) @db.Uuid
+  tripId      String         @db.Uuid
+  description String
+  amount      Int
+  category    Category       @default(OTHER)
+  splitType   SplitType      @default(EQUAL)
+  paidById    String         @db.Uuid
+  spentAt     DateTime       @default(now())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  trip        Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  paidBy      Member         @relation("PaidBy", fields: [paidById], references: [id], onDelete: Restrict)
+  shares      ExpenseShare[]
+
+  @@index([tripId])
+  @@map("expenses")
+}
+
+model ExpenseShare {
+  id        String  @id @default(uuid()) @db.Uuid
+  expenseId String  @db.Uuid
+  memberId  String  @db.Uuid
+  amount    Int
+  shares    Int?
+
+  expense   Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  member    Member  @relation(fields: [memberId], references: [id], onDelete: Restrict)
+
+  @@unique([expenseId, memberId])
+  @@index([memberId])
+  @@map("expense_shares")
+}
+
+model Settlement {
+  id           String   @id @default(uuid()) @db.Uuid
+  tripId       String   @db.Uuid
+  fromMemberId String   @db.Uuid
+  toMemberId   String   @db.Uuid
+  amount       Int
+  settledAt    DateTime @default(now())
+
+  trip         Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  fromMember   Member   @relation("SettlementFrom", fields: [fromMemberId], references: [id], onDelete: Restrict)
+  toMember     Member   @relation("SettlementTo", fields: [toMemberId], references: [id], onDelete: Restrict)
+
+  @@index([tripId])
+  @@map("settlements")
+}

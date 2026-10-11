@@ -7,11 +7,12 @@ function App() {
 
   useEffect(() => {
     fetch("/api/health")
-      .then((response) => (response.ok ? response.json() : Promise.reject()))
-      .then(() => setApiStatus("connected"))
+      .then((response) => response.json())
+      .then((data: { status: string; database: string }) =>
+        setApiStatus(`${data.status} (database ${data.database})`),
+      )
       .catch(() => setApiStatus("not reachable"));
   }, []);
-
   return (
     <main className={styles.page}>
       <h1 className={styles.title}>Split Money</h1>
