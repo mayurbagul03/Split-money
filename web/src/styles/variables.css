@@ -1,0 +1,50 @@
+:root {
+  /* Brand */
+  --color-primary: #0e6b5a;
+  --color-primary-hover: #0a4f43;
+  --color-primary-soft: #e3f0ec;
+  --color-on-primary: #ffffff;
+
+  /* Text and surfaces */
+  --color-text: #15201e;
+  --color-text-muted: #5b6a66;
+  --color-bg: #f4f6f5;
+  --color-surface: #ffffff;
+  --color-border: #dde3e1;
+
+  /* Money meaning: blue = gets back, orange = owes */
+  --color-gets-back: #0b5f8a;
+  --color-gets-back-soft: #e4f0f7;
+  --color-owes: #a8481a;
+  --color-owes-soft: #fbede4;
+
+  /* Fonts */
+  --font-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Font sizes */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-md: 1rem; /* 16px */
+  --text-lg: 1.25rem; /* 20px */
+  --text-xl: 1.75rem; /* 28px */
+  --text-2xl: 2.25rem; /* 36px */
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Corners */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-full: 999px;
+
+  /* Minimum size for anything tappable (accessibility guideline) */
+  --tap-target: 44px;
+}
