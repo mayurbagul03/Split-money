@@ -54,3 +54,93 @@ GET {{baseUrl}}/trips/00000000-0000-4000-8000-000000000000
 
 ### 404: invalid trip ID
 GET {{baseUrl}}/trips/abc
+
+
+### ===================== Step 6B =====================
+@m1 = {{createTrip.response.body.$.members[0].id}}
+@m2 = {{createTrip.response.body.$.members[1].id}}
+@m3 = {{createTrip.response.body.$.members[2].id}}
+@m4 = {{createTrip.response.body.$.members[3].id}}
+
+### Expense 1: member 1 pays $120 for dinner, split equally between all 4
+# @name dinner
+POST {{baseUrl}}/trips/{{tripId}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Seafood dinner",
+  "amount": 12000,
+  "category": "FOOD",
+  "paidById": "{{m1}}",
+  "split": { "type": "EQUAL", "memberIds": ["{{m1}}", "{{m2}}", "{{m3}}", "{{m4}}"] }
+}
+
+### Expense 2: member 2 pays $60 for tickets, exact amounts: member 3 owes $40, member 4 owes $20
+POST {{baseUrl}}/trips/{{tripId}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Museum tickets",
+  "amount": 6000,
+  "category": "FUN",
+  "paidById": "{{m2}}",
+  "split": {
+    "type": "EXACT",
+    "shares": [
+      { "memberId": "{{m3}}", "amount": 4000 },
+      { "memberId": "{{m4}}", "amount": 2000 }
+    ]
+  }
+}
+
+### List expenses
+GET {{baseUrl}}/trips/{{tripId}}/expenses
+
+### Summary: balances and suggested payments
+GET {{baseUrl}}/trips/{{tripId}}/summary
+
+### Settle up: member 3 pays member 1 $70
+POST {{baseUrl}}/trips/{{tripId}}/settlements
+Content-Type: application/json
+
+{ "fromMemberId": "{{m3}}", "toMemberId": "{{m1}}", "amount": 7000 }
+
+### Summary again: member 3 should now be at 0
+GET {{baseUrl}}/trips/{{tripId}}/summary
+
+
+### ---------- These should fail ----------
+
+### 400: exact amounts don't add up ($50 of $60)
+POST {{baseUrl}}/trips/{{tripId}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Bad split",
+  "amount": 6000,
+  "paidById": "{{m1}}",
+  "split": { "type": "EXACT", "shares": [{ "memberId": "{{m2}}", "amount": 5000 }] }
+}
+
+### 400: amount in dollars with decimals instead of cents
+POST {{baseUrl}}/trips/{{tripId}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Coffee",
+  "amount": 4.5,
+  "paidById": "{{m1}}",
+  "split": { "type": "EQUAL", "memberIds": ["{{m1}}"] }
+}
+
+### 400: paying yourself
+POST {{baseUrl}}/trips/{{tripId}}/settlements
+Content-Type: application/json
+
+{ "fromMemberId": "{{m1}}", "toMemberId": "{{m1}}", "amount": 100 }
+
+### 204: delete the dinner expense
+DELETE {{baseUrl}}/trips/{{tripId}}/expenses/{{dinner.response.body.$.id}}
+
+### 404: deleting it again
+DELETE {{baseUrl}}/trips/{{tripId}}/expenses/{{dinner.response.body.$.id}}

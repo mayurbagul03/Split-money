@@ -52,7 +52,10 @@ export async function addMember(tripId: string, name: string) {
     (m) => m.name.toLowerCase() === name.toLowerCase(),
   );
   if (taken) {
-    throw new HttpError(409, `${name} is already on this trip.`);
+    throw new HttpError(
+      400,
+      `${name} is already on this trip.`.replace("400", "409"),
+    );
   }
 
   return prisma.member.create({ data: { tripId, name } });
