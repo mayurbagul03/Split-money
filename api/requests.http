@@ -1,0 +1,56 @@
+@baseUrl = http://localhost:3000/api
+@tripId = {{createTrip.response.body.$.id}}
+
+### Health check
+GET {{baseUrl}}/health
+
+### Create a trip
+# @name createTrip
+POST {{baseUrl}}/trips
+Content-Type: application/json
+
+{
+  "name": "Miami Weekend",
+  "startDate": "2026-10-16",
+  "endDate": "2026-10-18",
+  "members": ["You", "Priya", "Rohan", "Aditi"]
+}
+
+### List all trips
+GET {{baseUrl}}/trips
+
+### Get the trip created above
+GET {{baseUrl}}/trips/{{tripId}}
+
+### Add a member
+POST {{baseUrl}}/trips/{{tripId}}/members
+Content-Type: application/json
+
+{ "name": "Sam" }
+
+
+### ---------- These should fail, with clear messages ----------
+
+### 400: empty trip name and no members
+POST {{baseUrl}}/trips
+Content-Type: application/json
+
+{ "name": "  ", "members": [] }
+
+### 400: duplicate names
+POST {{baseUrl}}/trips
+Content-Type: application/json
+
+{ "name": "Test", "members": ["Priya", "priya"] }
+
+### 409: adding someone who is already on the trip
+POST {{baseUrl}}/trips/{{tripId}}/members
+Content-Type: application/json
+
+{ "name": "Rohan" }
+
+### 404: trip ID that does not exist
+GET {{baseUrl}}/trips/00000000-0000-4000-8000-000000000000
+
+### 404: invalid trip ID
+GET {{baseUrl}}/trips/abc
