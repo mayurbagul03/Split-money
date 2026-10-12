@@ -58,4 +58,9 @@
   --avatar-3: #0b5f8a;
   --avatar-4: #a8481a;
   --avatar-5: #7a5c00;
+
+  /* Category tiles */
+  --color-fun: #6b45a3;
+  --color-fun-soft: #efe9f7;
+  --color-neutral-soft: #eef1f0;
 }

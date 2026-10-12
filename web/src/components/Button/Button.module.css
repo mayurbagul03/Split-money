@@ -49,3 +49,12 @@
 a.button {
   text-decoration: none;
 }
+.danger {
+  background: var(--color-surface);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.danger:hover:not(:disabled) {
+  background: var(--color-danger-soft);
+}

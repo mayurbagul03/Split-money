@@ -3,7 +3,157 @@
   color: var(--color-text-muted);
 }
 
-.members {
+/* People */
+
+.people {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.avatarStack {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.avatarStack > * {
+  border: 2px solid var(--color-bg);
+}
+
+.avatarStack > * + * {
+  margin-left: -10px;
+}
+
+.peopleLabel {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Total */
+
+.total {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-text);
+  color: var(--color-on-primary);
+}
+
+.totalLabel {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #b9c7c3;
+}
+
+.totalAmount {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.totalMeta {
+  font-size: var(--text-sm);
+  color: #b9c7c3;
+}
+
+/* Settle up */
+
+.settleCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+  text-decoration: none;
+}
+
+.settleCard:hover {
+  background: var(--color-surface);
+}
+
+.settleText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--text-sm);
+}
+
+.settleText strong {
+  font-size: var(--text-md);
+}
+
+.settled {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+  font-weight: 600;
+}
+
+/* Expenses */
+
+.expenses {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: var(--text-lg);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-6) var(--space-4);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-weight: 600;
+}
+
+.emptyText {
+  margin: 0 auto;
+  max-width: 32ch;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dayLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.list {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -12,24 +162,88 @@
   list-style: none;
 }
 
-.member {
+.expense {
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.expense[open] {
+  border-color: var(--color-border);
+}
+
+.expenseRow {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  font-weight: 500;
+  list-style: none;
+  cursor: pointer;
 }
 
-.avatar {
-  width: 32px;
-  height: 32px;
+.expenseRow::-webkit-details-marker {
+  display: none;
+}
+
+.expenseInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.expenseTitle {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expenseMeta {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.expenseAmount {
+  font-weight: 700;
+}
+
+.expenseDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.splitType {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.shares {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-self: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.share {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-full);
-  color: var(--color-on-primary);
+  gap: var(--space-3);
   font-size: var(--text-sm);
-  font-weight: 700;
+}
+
+.shareName {
+  flex: 1;
+}
+
+.shareAmount {
+  font-weight: 600;
 }
