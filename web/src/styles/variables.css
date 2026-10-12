@@ -47,4 +47,15 @@
 
   /* Minimum size for anything tappable (accessibility guideline) */
   --tap-target: 44px;
+
+  /* Errors */
+  --color-danger: #b3261e;
+  --color-danger-soft: #fce8e6;
+
+  /* Avatar and trip tile colors (all readable with white text) */
+  --avatar-1: #0e6b5a;
+  --avatar-2: #6b45a3;
+  --avatar-3: #0b5f8a;
+  --avatar-4: #a8481a;
+  --avatar-5: #7a5c00;
 }

@@ -1,33 +1,17 @@
-import { useEffect, useState } from "react";
-import { Button } from "./components/Button";
-import styles from "./App.module.css";
+import { Route, Routes } from "react-router";
+import { CreateTrip } from "./Page/CreateTrip";
+import { NotFound } from "./Page/NotFound";
+import { TripDetail } from "./Page/TripDetail";
+import { TripList } from "./Page/TripList";
 
 function App() {
-  const [apiStatus, setApiStatus] = useState("checking...");
-
-  useEffect(() => {
-    fetch("/api/health")
-      .then((response) => response.json())
-      .then((data: { status: string; database: string }) =>
-        setApiStatus(`${data.status} (database ${data.database})`),
-      )
-      .catch(() => setApiStatus("not reachable"));
-  }, []);
   return (
-    <main className={styles.page}>
-      <h1 className={styles.title}>Split Money</h1>
-      <p className={styles.status}>API: {apiStatus}</p>
-
-      <div className={styles.buttonRow}>
-        <Button>Add expense</Button>
-        <Button variant="secondary">Invite</Button>
-      </div>
-
-      <Button fullWidth>New trip</Button>
-      <Button fullWidth disabled>
-        Disabled
-      </Button>
-    </main>
+    <Routes>
+      <Route path="/" element={<TripList />} />
+      <Route path="/trips/new" element={<CreateTrip />} />
+      <Route path="/trips/:tripId" element={<TripDetail />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
